@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AI Study Tool</title>
+        <link rel="stylesheet" href="/static/style.css">
+    </head>
+    <body>
+        <h1>AI Study Tool</h1>
+        <p>Paste your study notes below and get a question to test your understanding.</p>
+        <textarea id="notes" placeholder="Paste your notes here..."></textarea>
+        <button onclick="generateQuestion()">Generate Question</button>
+        <div id="result">
+            <h3>Your Study Question</h3>
+            <p id="question"></p>
+        </div>
+    <script src="/static/script.js"></script>
+    </body>
+</html>
