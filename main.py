@@ -4,6 +4,7 @@ from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 from anthropic import Anthropic
 from dotenv import load_dotenv
+import markdown
 import os
 
 load_dotenv()
@@ -33,3 +34,21 @@ async def generate(input: NotesInput):
         ]
     )
     return {"question": message.content[0].text}
+
+class FeedbackInput(BaseModel):
+    question: str
+    answer: str
+
+@app.post("/feedback")
+async def feedback(input: FeedbackInput):
+    message = client.messages.create(
+        model="claude-sonnet-4-6",
+        max_tokens=1024,
+        messages=[
+            {
+                "role": "user",
+                "content": f"A student was asked the following question: {input.question}\n\nTheir answer was: {input.answer}\n\nEvaluate their answer. Tell them what they got right, what they got wrong, and how they could improve. Be concise and encourging."
+            }
+        ]
+    )
+    return {"feedback": markdown.markdown(message.content[0].text)}

@@ -17,3 +17,21 @@ async function generateQuestion(){
     document.getElementById('question').textContent = data.question;
     document.getElementById('result').style.display = 'block';
 }
+
+async function giveFeedback(){
+    const question = document.getElementById('question').textContent;
+    const answer = document.getElementById('answer').value;
+
+    const response = await fetch('/feedback',{
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({question: question, answer: answer}),
+    });
+
+    const data = await response.json();
+    
+
+    document.getElementById('feedback').innerHTML = data.feedback;
+
+}
+
