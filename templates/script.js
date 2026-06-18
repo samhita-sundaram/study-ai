@@ -1,3 +1,6 @@
+const sessionHistory = [];
+
+
 async function generateQuestion(){
     const notes = document.getElementById('notes').value;
     if(!notes){
@@ -32,6 +35,17 @@ async function giveFeedback(){
     
 
     document.getElementById('feedback').innerHTML = data.feedback;
+    sessionHistory.push({question: question, answer: answer, feedback: data.feedback});
 
+}
+
+function showSummary(){
+    let summaryText = "";
+
+    sessionHistory.forEach(function(item){
+        summaryText += "Q: " + item.question + "\nA: " + item.answer + "\n\n";
+    });
+
+    document.getElementById('summaryContent').textContent = summaryText;
 }
 
