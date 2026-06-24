@@ -43,3 +43,10 @@ button:hover{
     display: none;
 }
 
+#loading, #loadingFeedback{
+    display: none;
+    margin-top: 10px;
+    font-size: 16px;
+    color: #555;
+}
+

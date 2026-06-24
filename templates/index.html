@@ -11,11 +11,13 @@
         <p>Paste your study notes below and get a question to test your understanding.</p>
         <textarea id="notes" placeholder="Paste your notes here..."></textarea>
         <button onclick="generateQuestion()">Generate Question</button>
+        <p id="loading">Generating question...</p>
         <div id="result">
             <h3>Your Study Question</h3>
             <p id="question"></p>
             <textarea id="answer" placeholder="Answer.."></textarea>
             <button onclick="giveFeedback()">Give Feedback</button>
+            <p id="loadingFeedback">Evaluating your question...</p>
             <p id="feedback"></p>
         </div>
         <div id="summary">

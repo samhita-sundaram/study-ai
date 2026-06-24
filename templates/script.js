@@ -8,6 +8,7 @@ async function generateQuestion(){
         return;
     }
 
+    document.getElementById('loading').style.display = 'block';
     document.getElementById('result').style.display = 'none';
 
     const response = await fetch('/generate', {
@@ -17,6 +18,7 @@ async function generateQuestion(){
     });
 
     const data = await response.json();
+    document.getElementById('loading').style.display = 'none';
     document.getElementById('question').textContent = data.question;
     document.getElementById('result').style.display = 'block';
 }
@@ -24,6 +26,7 @@ async function generateQuestion(){
 async function giveFeedback(){
     const question = document.getElementById('question').textContent;
     const answer = document.getElementById('answer').value;
+    document.getElementById('loadingFeedback').style.display = 'block';
 
     const response = await fetch('/feedback',{
         method: 'POST',
@@ -33,7 +36,7 @@ async function giveFeedback(){
 
     const data = await response.json();
     
-
+    document.getElementById('loadingFeedback').style.display = 'none';
     document.getElementById('feedback').innerHTML = data.feedback;
     sessionHistory.push({question: question, answer: answer, feedback: data.feedback});
 
