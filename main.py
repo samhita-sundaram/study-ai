@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Request
+from fastapi.responses import StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
@@ -23,17 +24,20 @@ class NotesInput(BaseModel):
 
 @app.post("/generate")
 async def generate(input: NotesInput):
-    message = client.messages.create(
-        model="claude-sonnet-4-6",
-        max_tokens=1024,
-        messages=[
-            {
-                "role": "user",
-                "content": f"Based on the following study notes, generate one clear question that tests deep understanding. Only return the question, nothing else. \n\nNotes: {input.notes}"
-            }
-        ]
-    )
-    return {"question": message.content[0].text}
+    def stream():
+        with client.messages.stream(
+            model="claude-sonnet-4-6",
+            max_tokens=1024,
+            messages=[
+                {
+                    "role": "user",
+                    "content": f"Based on the following study notes, generate one clear question that tests deep understanding. Only return the question, nothing else. \n\nNotes: {input.notes}"
+                }
+            ]
+        ) as stream: 
+            for text in stream.text_stream:
+                yield text
+    return StreamingResponse(stream(), media_type="text/plain")
 
 class FeedbackInput(BaseModel):
     question: str

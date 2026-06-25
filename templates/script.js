@@ -17,10 +17,19 @@ async function generateQuestion(){
         body: JSON.stringify({notes: notes})
     });
 
-    const data = await response.json();
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+
     document.getElementById('loading').style.display = 'none';
-    document.getElementById('question').textContent = data.question;
+    document.getElementById('question').textContent = '';
     document.getElementById('result').style.display = 'block';
+
+    while(true) {
+        const {done, value} = await reader.read();
+        if(done) break;
+        const chunk = decoder.decode(value);
+        document.getElementById('question').textContent += chunk;
+    }
 }
 
 async function giveFeedback(){
