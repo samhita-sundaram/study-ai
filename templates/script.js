@@ -61,3 +61,17 @@ function showSummary(){
     document.getElementById('summaryContent').textContent = summaryText;
 }
 
+async function uploadPDF(){
+    let file = document.getElementById("pdfUpload").files[0];
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const response = await fetch('/upload-pdf',{
+        method: 'POST',
+        body: formData,
+    });
+
+   const data = await response.json();
+   document.getElementById('notes').value = data.text;
+}

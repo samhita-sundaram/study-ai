@@ -1,10 +1,12 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, File, UploadFile
 from fastapi.responses import StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 from anthropic import Anthropic
 from dotenv import load_dotenv
+from pypdf import PdfReader
+import io
 import markdown
 import os
 
@@ -56,3 +58,14 @@ async def feedback(input: FeedbackInput):
         ]
     )
     return {"feedback": markdown.markdown(message.content[0].text)}
+
+@app.post("/upload-pdf")
+async def upload_pdf(file: UploadFile = File(...)):
+    contents = await file.read()
+    pdf = PdfReader(io.BytesIO(contents))
+    text = ""
+
+    for page in pdf.pages:
+        text += page.extract_text()
+
+    return{"text": text}

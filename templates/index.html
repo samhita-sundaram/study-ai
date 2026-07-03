@@ -10,6 +10,9 @@
         <h1>AI Study Tool</h1>
         <p>Paste your study notes below and get a question to test your understanding.</p>
         <textarea id="notes" placeholder="Paste your notes here..."></textarea>
+        <p>Or upload a PDF:</p>
+        <input type="file" id="pdfUpload" accept=".pdf">
+        <button onclick="uploadPDF()">Upload PDF</button>
         <button onclick="generateQuestion()">Generate Question</button>
         <p id="loading">Generating question...</p>
         <div id="result">
